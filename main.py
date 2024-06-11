@@ -18,4 +18,3 @@ with open('movies_data.csv', 'w', newline='', encoding='utf-8') as csvfile:
         movieID = 'tt' + str(i).zfill(7)
         data = requests.get(getURL(movieID, 'e4deafa')).json()
         movieObject = movie.Movie.from_dict(data)
-        print(movieObject.imdbID)
