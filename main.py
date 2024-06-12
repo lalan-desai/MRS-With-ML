@@ -1,48 +1,62 @@
-import csv
 import requests
-import movie
 import time
 import threading
+import logging
+import pymongo
 
-def getURL(movieID, apiKEY):
-    return 'https://www.omdbapi.com/?i='+ movieID +'&plot=full&apikey=' + apiKEY
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def get_movie_data(movieID, apiKEY):
+# API key
+apiKey = 'e4deafa'
+
+# MongoDB connection
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+db = client["movie_database"]
+collection = db["movies"]
+
+def getURL(movieID):
+    return 'https://www.omdbapi.com/?i='+ movieID +'&plot=full&apikey=' + apiKey
+
+# Function to get data from API
+def get_movie_data(movieID):
     request_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    logging.info(f"{request_time} : Request for movie ID {movieID}")
     print(f"{request_time} : Request for movie ID {movieID}")
-    
-    data = requests.get(getURL(movieID, apiKEY)).json()
-    if data.get("Ratings") is not None:
-        del data["Ratings"]  # Exclude Ratings field from the data dictionary
-        return data
-    else:
-        print(f"No ratings found for movie ID {movieID}")
+    try:
+        response = requests.get(getURL(movieID))
+        response.raise_for_status()  # Raise HTTPError for bad responses
+        data = response.json()
+        
+        if data.get("Response") == "True":
+            
+            return data
+        else:
+            logging.warning(f"No data found for movie ID {movieID}")
+            return None
+    except requests.RequestException as e:
+        logging.error(f"Error retrieving data for movie ID {movieID}: {e}")
         return None
 
-def write_movie_data(movieID, apiKEY, writer):
-    row_dict = get_movie_data(movieID, apiKEY)
-    writer.writerow(row_dict)
+# Function to write movie data to MongoDB
+def insert_movie_data(movieID):
+    data = get_movie_data(movieID)
+    if data:
+        collection.insert_one(data)
 
+# Main function
 def main():
-    # Open CSV file in write mode
-    with open('movies_data.csv', 'w', newline='', encoding='utf-8') as csvfile:
-        fieldnames = ['Title', 'Year', 'Rated', 'Released', 'Runtime', 'Genre', 'Director', 'Writer', 'Actors', 
-                      'Plot', 'Language', 'Country', 'Awards', 'Poster', 'Metascore', 'imdbRating', 'imdbVotes', 
-                      'imdbID', 'Type', 'DVD', 'BoxOffice', 'Production', 'Website', 'Response']
-        
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        
-        threads = []
-        for i in range(1, 1001):
-            movieID = 'tt' + str(i).zfill(7)
-            thread = threading.Thread(target=write_movie_data, args=(movieID, 'e4deafa', writer))
-            thread.start()
-            threads.append(thread)
-        
-        # Wait for all threads to complete
-        for thread in threads:
-            thread.join()
+    threads = []
+    for i in range(1, 1001):
+        movieID = 'tt' + str(i).zfill(7)
+        thread = threading.Thread(target=insert_movie_data, args=(movieID,))
+        thread.start()
+        threads.append(thread)
+        # time.sleep(0.1)  # Sleep for 0.1 second between requests
+    
+    # Wait for all threads to complete
+    for thread in threads:
+        thread.join()
 
 if __name__ == "__main__":
     main()

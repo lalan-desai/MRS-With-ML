@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-family: verdana;
+    display: flex;
+    background-color: black;
+    margin: auto;
+    flex-direction: row;
+}
+
+.leftContainer,
+.rightContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.leftContainer {
+    background-color: white;
+}
+
+.rightContainer {
+    background-color: #DEF7E5;
+}
+
+.input {
+    text-decoration: none;
+    border: 1px black solid;
+    border-radius: 10px;
+    padding: 12px 20px !important;
+    margin-top: 20px;
+    width: 30%;
+}

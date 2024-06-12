@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+    <title>MRS using ML</title>
+</head>
+
+<body>
+
+    <div class="leftContainer">
+        <h1>Sign in</h1>
+        <p>Create you new account in seconds...</p>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+
+            <button type="submit">Create an Account</button>
+        </form>
+
+        <p>Already have an account? <a href="/login">Login</a></p>
+    </div>
+
+    <div class="rightContainer">
+        <h1>OTT Platform with Movie Recommendation System</h1>
+        <p>Your Movie Buddy: Simple Suggestions for Epic Nights!</p>
+        <img src="{% static 'image 1.svg' %}" alt="" srcset="">
+    </div>
+
+</body>
+
+</html>
