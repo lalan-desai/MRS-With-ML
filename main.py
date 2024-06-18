@@ -1,62 +1,72 @@
-import requests
-import time
-import threading
-import logging
+import asyncio
+import aiohttp
 import pymongo
 
-# Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+import json
 
-# API key
-apiKey = 'e4deafa'
+key = '84c64481'
+MAX_CONCURRENT_REQUESTS = 2000
+TIMEOUT = 0
+BATCH_SIZE = 2000
 
-# MongoDB connection
 client = pymongo.MongoClient("mongodb://localhost:27017/")
-db = client["movie_database"]
-collection = db["movies"]
+db = client["imdb"]
+collection = db["content"]
 
-def getURL(movieID):
-    return 'https://www.omdbapi.com/?i='+ movieID +'&plot=full&apikey=' + apiKey
+async def fetch(session, movieID, apiKey):
+    url = f'https://www.omdbapi.com/?i={movieID}&plot=full&apikey={apiKey}'
 
-# Function to get data from API
-def get_movie_data(movieID):
-    request_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-    logging.info(f"{request_time} : Request for movie ID {movieID}")
-    print(f"{request_time} : Request for movie ID {movieID}")
+    async with session.get(url, timeout=TIMEOUT) as response:
+        response_text = await response.text()
+        try:
+            data = json.loads(response_text)
+            return data
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON: {e}")
+            return None
+
+async def insert_movie_data(movieID, apiKey, session):
     try:
-        response = requests.get(getURL(movieID))
-        response.raise_for_status()  # Raise HTTPError for bad responses
-        data = response.json()
+        data = await fetch(session, movieID, apiKey)
         
-        if data.get("Response") == "True":
-            
+        if data and data.get("Response") == "True":
             return data
         else:
-            logging.warning(f"No data found for movie ID {movieID}")
             return None
-    except requests.RequestException as e:
-        logging.error(f"Error retrieving data for movie ID {movieID}: {e}")
-        return None
+    except aiohttp.ClientError as e:
+        print(f"Error fetching movie {movieID}: {e}")
+        return None, 0
 
-# Function to write movie data to MongoDB
-def insert_movie_data(movieID):
-    data = get_movie_data(movieID)
-    if data:
-        collection.insert_one(data)
-
-# Main function
-def main():
-    threads = []
-    for i in range(1, 1001):
-        movieID = 'tt' + str(i).zfill(7)
-        thread = threading.Thread(target=insert_movie_data, args=(movieID,))
-        thread.start()
-        threads.append(thread)
-        # time.sleep(0.1)  # Sleep for 0.1 second between requests
+async def insert_batch_of_movies(movie_ids, api_key, session):
     
-    # Wait for all threads to complete
-    for thread in threads:
-        thread.join()
+    tasks = [insert_movie_data(movie_id, api_key, session) for movie_id in movie_ids]
+    movie_data_with_times = await asyncio.gather(*tasks)
+    
+    movies_to_insert = []
+    
+    for data in movie_data_with_times:
+        if data:
+            movies_to_insert.append(data)
+    
+    if movies_to_insert:
+        collection.insert_many(movies_to_insert)
+    
+
+async def main():
+    fromNumber = 500001
+    toNumber =   750000  # Adjust to your desired range for testing
+    
+    session = aiohttp.ClientSession()
+    
+    try:
+        for i in range(fromNumber, toNumber, BATCH_SIZE):
+            batch_movie_ids = [f'tt{str(j).zfill(7)}' for j in range(i, min(i + BATCH_SIZE, toNumber))]
+            print(f'Making requests for IMDb IDs {i} to {min(i + BATCH_SIZE - 1, toNumber)}...')
+            await insert_batch_of_movies(batch_movie_ids, key, session)
+        
+    
+    finally:
+        await session.close()
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
