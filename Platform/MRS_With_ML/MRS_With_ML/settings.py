@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user_authentication',
-    'dashboard'
+    'dashboard',
+    'MRS_With_ML'
     
 ]
 
@@ -80,12 +81,13 @@ WSGI_APPLICATION = 'MRS_With_ML.wsgi.application'
 
 DATABASES = {
    'default': {
-            'ENGINE': 'djongo',
-            'NAME': 'movie_database',
-            'ENFORCE_SCHEMA': False,
-        }
-
-    
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'mrs',
+        'USER': 'root',
+        'PASSWORD': 'Un13buvdsm',
+        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
+    }
 }
 
 
@@ -99,12 +101,8 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    
+    
 ]
 
 
@@ -123,7 +121,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL =  'static/'
+STATIC_ROOT = ''
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = ('static',)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

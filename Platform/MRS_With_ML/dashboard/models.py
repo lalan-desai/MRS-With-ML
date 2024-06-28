@@ -5,15 +5,16 @@ class UserPreferences(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     languages = models.CharField(max_length=100)
     genres = models.CharField(max_length=100)
-
+    
 
     def __str__(self):
         return self.user.username + "'s Preferences"
 
 
+
 class Content(models.Model):
-    imdbid = models.CharField(primary_key=True, max_length=12)
-    title = models.CharField(max_length=200)
+    imdbid = models.CharField(primary_key=True, max_length=20)
+    title = models.CharField(max_length=255)
     year = models.IntegerField()
     genre = models.CharField(max_length=100)
     director = models.CharField(max_length=100)
@@ -21,9 +22,24 @@ class Content(models.Model):
     actors = models.CharField(max_length=200)
     plot = models.TextField()
     language = models.CharField(max_length=100)
-    poster =  models.CharField(max_length=250)
-    imdbVotes = models.BigIntegerField()
+    poster =  models.URLField()
     imdbRating = models.FloatField()
+    imdbVotes = models.BigIntegerField()
+    type = models.CharField(max_length=10)
+
 
     def __str__(self):
         return self.title
+
+
+
+class Feedback(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.ForeignKey(Content, on_delete=models.CASCADE)
+    has_liked = models.BooleanField()
+
+    class Meta:
+        unique_together = ('user', 'content')
+
+    def __str__(self):
+        return f"{self.user.username} {'liked' if self.has_liked else 'disliked'} {self.content.title}"

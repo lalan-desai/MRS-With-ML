@@ -1,44 +1,13 @@
 from django.shortcuts import render, redirect
-from .models import UserPreferences
+from .models import UserPreferences, Feedback, Content
 from .forms import InitialSelectionForm
-
-
-import pymongo
-import pandas as pd
-from pymongo import MongoClient
-
-client = MongoClient()
-
-db = client.movie_database
-
-collection = db.movies
-
-df = pd.DataFrame(list(collection.find().limit(100)))
-
-df['imdbRating'].replace('N/A', 0, inplace=True)
-df['imdbVotes'].replace('N/A', 0, inplace=True)
-
-df['imdbRating'].replace('NaN', 0, inplace=True)
-df['imdbVotes'].replace('NaN', 0, inplace=True)
+from django.db import connection
+import json
+from django.http import JsonResponse
 
 
 
-df.head()
 
-
-
-# Function to recommend top 10 movies for each genre and preferred languages
-def recommend_movies_by_genre_and_language(genre, languages):
-    # Filter dataframe for the given genre and preferred languages
-    genre_df = df[df['Genre'].str.contains(genre) & df['Language'].apply(lambda x: any(lang in x for lang in languages))]
-
-    # Sort by imdbVotes and imdbRating in descending order
-    sorted_df = genre_df.sort_values(by=['imdbVotes', 'imdbRating'], ascending=False)
-
-    # Select top 10 movies
-    top_movies = sorted_df.head(10)
-    
-    return top_movies
 
 def index(request):
     # Check if user is authenticated
@@ -53,24 +22,23 @@ def index(request):
                 'languages': user_preferences.languages,
                 'genres': user_preferences.genres,
             }
+            
+            # Get top 10 content for each genre based on user preferences
+            content_suggestions = get_top_content(user_preferences.languages, user_preferences.genres)
 
-            recommendations = {}
-            for genre in user_preferences.genres:
-                recommendations[genre] = recommend_movies_by_genre_and_language(genre, user_preferences.languages)
-
-            # Print recommendations
-            for genre, movies in recommendations.items():
-                print(f"\nTop 10 Movies in {genre} for Preferred Languages:\n")
-                print(movies)
-
-
-           
-                        
-            return render(request, 'dashboard/index.html', {'user_info': user_info})
+            # Get feedback for the current user
+            user_feedback = Feedback.objects.filter(user=request.user)
+            feedback_data = {feedback.content.imdbid: feedback.has_liked for feedback in user_feedback}
+            
+            return render(request, 'dashboard/index.html', {
+                'user_info': user_info, 
+                'content_suggestions': content_suggestions,
+                'feedback_data': feedback_data
+            })
     
         except UserPreferences.DoesNotExist:
             # User preferences do not exist, redirect to preferences page
-            return redirect('dashboard/initialSelection')  # assuming you have a URL named 'preferences' for the preferences page
+            return redirect('initialSelection')  # assuming you have a URL named 'preferences' for the preferences page
     else:
         # User is not authenticated, redirect to login page
         return redirect('/login')
@@ -92,28 +60,65 @@ def initialSelection(request):
             return redirect('/dashboard')
     
         except UserPreferences.DoesNotExist:
-            if(request.method == 'GET'):
-
+            if request.method == 'GET':
                 isf = InitialSelectionForm()
-                return render(request, 'initialSelection/index.html', {'form' : isf})
+                return render(request, 'initialSelection/index.html', {'form': isf})
             
             else:
                 form = InitialSelectionForm(request.POST)
                 if form.is_valid():
                     instance = UserPreferences(
-                    user=request.user,
-                    languages=form.cleaned_data['languages'],
-                    genres=form.cleaned_data['genres'],
-                )
-                instance.save()  # Save the instance to the database
+                        user=request.user,
+                        languages=form.cleaned_data['languages'],
+                        genres=form.cleaned_data['genres'],
+                    )
+                    instance.save()  # Save the instance to the database
 
-                # Redirect to the dashboard or any other page after saving preferences
-                return redirect('/dashboard')
+                    # Redirect to the dashboard or any other page after saving preferences
+                    return redirect('/dashboard')
                 
-            
     else:
         # User is not authenticated, redirect to login page
         return redirect('/login')
+
+def get_top_content(languages, genres):
+    content_suggestions = {}
+
+    # Convert languages and genres to lists of strings
+    languages_list = languages.strip("[]").replace("'", "").split(", ")
+    genres_list = genres.strip("[]").replace("'", "").split(", ")
+
+    # For each genre, get the top 10 content
+    for genre in genres_list:
+        query = f"""
+        SELECT title, poster, genre, plot, imdbVotes,imdbRating, language, imdbid
+        FROM mrs.dashboard_content
+        WHERE ({' OR '.join([f"FIND_IN_SET('{language}', language)" for language in languages_list])})
+          AND FIND_IN_SET('{genre}', genre)
+        ORDER BY imdbVotes DESC
+        LIMIT 7;
+        """
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            results = cursor.fetchall()
+            content_suggestions[genre] = results
     
+    return content_suggestions
 
 
+
+def searchContent(request):
+    searchQuery = request.GET.get('query', '')
+    results = []
+    query = """
+        SELECT imdbid, title, year
+        FROM mrs.dashboard_content
+        WHERE title LIKE %s
+        ORDER BY imdbVotes DESC
+        LIMIT 5;
+        """
+    with connection.cursor() as cursor:
+        cursor.execute(query, [f"%{searchQuery}%"])
+        results = cursor.fetchall()
+        
+    return JsonResponse(results, safe=False)
