@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+    <title>MRS using ML</title>
+</head>
+
+<body>
+
+    <div class="leftContainer">
+
+        <div>
+            <h1 class="headerText">Sign in</h1>
+            <p style="margin-bottom: 15px;">Create you new account in seconds...</p>
+            <form method="post" class="inputForm">
+                {% csrf_token %}
+
+                <div class="inputField">
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                    <div class="error">{{ form.username.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="inputField">
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <div class="error">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="inputField">
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                    <div class="error">{{ form.password1.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="inputField">
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                    <div class="error">{{ form.password2.errors }}</div>
+                    {% endif %}
+                </div>
+                <button class="submitButton" type="submit">Register</button>
+            </form>
+
+
+            <p>Already have an account? <a href="/login">Login</a></p>
+        </div>
+    </div>
+
+    <div class="rightContainer">
+        <h1 class="ottHeaderText">OTT Platform With</h1>
+        <h1 class="ottHeaderText">Movie Recommendation System</h1>
+        <br>
+        <p class="subDescText">Your Movie <span class="descHighlightText">Buddy</span>: Simple Suggestions for <span
+                class="descHighlightText">Epic</span> Nights!</p>
+        <img src="{% static 'image 1.svg' %}" alt="" srcset="">
+    </div>
+
+</body>
+
+</html>

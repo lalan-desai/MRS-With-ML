@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="leftSideNavBar">
+            <h1>Admin Panel</h1>
+            <a href="admin/content/" class="navButton">Content</a>
+        </div>
+        <div class="profileContainer">
+            <img src="{% static 'icons/User.png' %}" alt="" srcset="" class="navUserImage">
+            <p>{{ user_info.username }}</p>
+            <form action="/logout" method="post">
+                {% csrf_token %}
+                <button type="submit" class="logoutButton">
+                    <img src="{% static 'icons/Logout.png' %}" alt="" srcset="" class="navLogoutImage">
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+
+
+        <div class="userKPIContainer">
+
+            <div class="topCardContainer">
+                <div class="dashCard">
+                    <label>Total Users:</label>
+                    <span>{{ total_users }}</span>
+                </div>
+
+                <div class="dashCard">
+                    <label>Active Users:</label>
+                    <span>{{ active_users }}</span>
+                </div>
+
+                <div class="dashCard">
+                    <label>Inactive Users:</label>
+                    <span>{{ inactive_users }}</span>
+                </div>
+
+            </div>
+
+
+            <div class="chart-container">
+                <canvas id="userCreationChart"></canvas>
+            </div>
+        </div>
+
+
+
+        <div class="chart-container">
+            <canvas id="genreChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="languageChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="yearBatchChart"></canvas>
+        </div>
+
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Chart for top genres
+            var genreData = JSON.parse('{{ top_genres_json|escapejs }}');
+            var genreLabels = Object.keys(genreData);
+            var genreCounts = Object.values(genreData);
+
+            var genreCtx = document.getElementById('genreChart').getContext('2d');
+            var genreChart = new Chart(genreCtx, {
+                type: 'bar',
+                data: {
+                    labels: genreLabels,
+                    datasets: [{
+                        label: 'Genre Counts',
+                        data: genreCounts,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Chart for top languages
+            var languageData = JSON.parse('{{ top_languages_json|escapejs }}');
+            var languageLabels = Object.keys(languageData);
+            var languageCounts = Object.values(languageData);
+
+            var languageCtx = document.getElementById('languageChart').getContext('2d');
+            var languageChart = new Chart(languageCtx, {
+                type: 'bar',
+                data: {
+                    labels: languageLabels,
+                    datasets: [{
+                        label: 'Language Counts',
+                        data: languageCounts,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Chart for top year batches
+            var yearBatchData = JSON.parse('{{ top_year_batches_json|escapejs }}');
+            var yearBatchLabels = Object.keys(yearBatchData);
+            var yearBatchCounts = Object.values(yearBatchData);
+
+            var yearBatchCtx = document.getElementById('yearBatchChart').getContext('2d');
+            var yearBatchChart = new Chart(yearBatchCtx, {
+                type: 'bar',
+                data: {
+                    labels: yearBatchLabels,
+                    datasets: [{
+                        label: 'Year Batch Counts',
+                        data: yearBatchCounts,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Chart for user creation in the last 7 days (Line Chart)
+            var userCreationData = JSON.parse('{{ user_creation_data_json|escapejs }}');
+            var userCreationLabels = Object.keys(userCreationData);
+            var userCreationCounts = Object.values(userCreationData);
+
+            var userCreationCtx = document.getElementById('userCreationChart').getContext('2d');
+            var userCreationChart = new Chart(userCreationCtx, {
+                type: 'line',
+                data: {
+                    labels: userCreationLabels,
+                    datasets: [{
+                        label: 'User Creation Counts (Last 7 Days)',
+                        data: userCreationCounts,
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

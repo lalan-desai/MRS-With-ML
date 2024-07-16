@@ -1,0 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+nav {
+    margin: 0;
+    width: 100%;
+    background-color: rgb(236, 236, 236);
+    padding: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profileContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: aliceblue;
+    padding: 5px;
+    border: 1px darkcyan solid;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.navUserImage {
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.navLogoutImage {
+    height: 25px;
+    width: 25px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.genreTextHighlight {
+    color: green;
+}
+
+.suggestionContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.suggestionCard {
+    width: 280px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    opacity: 0;
+}
+
+.suggestionCard:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.suggestionImage {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.descContainer {
+    padding: 1rem;
+}
+
+.titleText {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.genresText {
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.plotText {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #333;
+}
+
+.ratingRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem 1rem;
+}
+
+.starIcon {
+    height: 20px;
+    width: 20px;
+    fill: gold;
+    margin-right: 5px;
+}
+
+.ratingText {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.heartButtoncontainer {
+    margin-left: auto;
+}
+
+.heartButton {
+    fill: none;
+    cursor: pointer;
+}
+
+.heartButton.favorited {
+    fill: pink;
+}

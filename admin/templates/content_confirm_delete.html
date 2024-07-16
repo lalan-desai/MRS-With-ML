@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Content Confirmation</title>
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+</head>
+<body>
+    <nav>
+        <h1>Admin Panel</h1>
+        <div class="profileContainer">
+            <img src="{% static 'icons/User.png' %}" alt="" srcset="" class="navUserImage">
+            <p>{{ user_info.username }}</p>
+            <form action="/logout" method="post">
+                {% csrf_token %}
+                <button type="submit" class="logoutButton">
+                    <img src="{% static 'icons/Logout.png' %}" alt="" srcset="" class="navLogoutImage">
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <h1>Delete Content</h1>
+        <p>Are you sure you want to delete the content titled "{{ object.title }}"?</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Yes, delete</button>
+        </form>
+
+        <a href="{% url 'content-list' %}">No, go back to Content List</a>
+    </div>
+</body>
+</html>

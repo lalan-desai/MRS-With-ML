@@ -1,0 +1,122 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    padding: 1rem;
+}
+
+.languageChoices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+
+input[type='checkbox'] {
+    -webkit-appearance: none;
+    appearance: none;
+    /* For iOS < 15 to remove gradient background */
+    background-color: #fff;
+    /* Not removed via appearance */
+    margin: 0;
+}
+
+
+.checkbox-container {
+    margin: 10px;
+    padding: 10px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 20px;
+    border: 1.5px solid rgb(166, 166, 166);
+    cursor: pointer;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box; /* Include padding and border in total width and height */
+}
+
+/* Animation keyframes for fading in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px); /* Optional: Slide in from bottom */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* CSS styles for the checked state */
+.checkbox-container.checked {
+    border-width: 1.5px;
+    border-color: blue;
+}
+
+label:hover{
+    cursor: pointer;
+}
+
+
+
+.genreChoices{
+    display: grid;
+    flex-direction: row;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.checkbox-container{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.genreImage{
+    height: 50px;
+    width: 50px;
+    margin-bottom: 10px;
+}
+
+label{
+    font-size: 20px;
+    font-weight: 300;
+    color: rgb(94, 94, 94);
+    user-select: none
+}
+
+.counter{
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 0.8rem;
+    background-color: blueviolet;
+    color: white;
+    padding: 0.2rem;
+    border-radius: 20px;
+    align-items: center;
+    font-size: 1.2rem;
+    
+    
+}
+
+.SubmitButton{
+    padding: 1rem 1rem;
+    width: 200px;
+    border-radius: 20px;
+    border: none;
+    background-color: blueviolet;
+    color: white;
+    position: absolute;
+    right: 0;
+    margin-right: 1.4rem;
+    margin-top: 1rem;
+    cursor: pointer;
+}

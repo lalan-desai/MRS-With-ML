@@ -1,0 +1,11 @@
+
+body{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+.serchInput{
+    padding: 2rem 1rem;
+    width: 90%;
+    align-items: center;
+}

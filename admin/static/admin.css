@@ -1,0 +1,111 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+nav{
+    display: flex;
+    background-color: rgb(240, 240, 240);
+    align-items: center;
+    padding: 0.7rem 1rem;
+    justify-content: space-between;
+}
+
+.leftSideNavBar{
+    display: flex;
+    align-items: center;
+
+}
+
+.navButton{
+    margin-left: 30px;
+    font-size: 1.2rem;
+}
+
+nav h1{
+    font-weight: bold;
+}
+
+.profileContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: aliceblue;
+    padding: 5px;
+    border: 1px darkcyan solid;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.navUserImage {
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.navLogoutImage {
+    height: 25px;
+    width: 25px;
+    margin-left: 10px;
+}
+
+.logoutButton {
+    border: none;
+    display: flex;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.logoutButton:hover {
+    scale: 1.1;
+}
+
+.userKPIContainer{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    justify-content: space-evenly;
+}
+
+.topCardContainer{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+    gap: 40px;
+    background-color: rgb(132, 55, 204);
+    padding: 15px;
+    color: white;
+    margin: 15px;
+    border-radius: 10px;
+}
+
+.dashCard{
+    display: flex;
+    justify-content: center;
+    
+    align-items: center;
+    border-radius: 40px;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.dashCard label{
+    font-size: 2rem;
+
+}
+
+.dashCard span{
+    font-size: 2.5rem;
+}
+
+
+
+.chart-container{
+    display: flex;
+    border: 1px solid gray;
+    margin: 20px;
+    padding: 15px;
+    border-radius: 10px;
+
+}

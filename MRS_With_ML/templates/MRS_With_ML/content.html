@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{content.1}}</title>
+    <link rel="stylesheet" href="{% static 'content.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <div class="contentContainer">
+        <img src={{content.9}} alt="" srcset="">
+        <div class="condescContainer">
+            <div class="headerContainer">
+                <div>
+                    <h1 class="conTitleText">{{content.1}} <span class="yearText">({{content.2}})</span></h1>
+                    <p class="conGenreText">{{content.3}}</p>
+                </div>
+                <div class="ratingsContainer">
+                    <p>
+                        <a style="text-decoration: underline; color: blue;" target="_blank" href="https://www.imdb.com/title/{{ content.0 }}/">IMDB</a> RATING
+                    </p>
+                    <div class="ratingsDetailsCard">
+                        <svg style="margin-right: 10px;" class="starIcon" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="20" height="20"
+                            viewBox="0 0 256 256" xml:space="preserve">
+
+                            <defs>
+                            </defs>
+                            <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;"
+                                transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                                <path
+                                    d="M 89.95 34.92 c -0.135 -0.411 -0.519 -0.688 -0.95 -0.688 H 56.508 L 45.948 2.814 C 45.811 2.408 45.43 2.133 45 2.133 s -0.811 0.274 -0.948 0.681 l -10.56 31.417 H 1 c -0.432 0 -0.815 0.277 -0.95 0.688 s 0.009 0.861 0.357 1.117 l 26.246 19.314 l -10 31.21 c -0.131 0.409 0.014 0.856 0.36 1.11 c 0.348 0.257 0.817 0.261 1.168 0.012 L 45 68.795 l 26.818 18.889 c 0.173 0.122 0.375 0.183 0.576 0.183 c 0.208 0 0.416 -0.064 0.592 -0.194 c 0.347 -0.254 0.491 -0.701 0.36 -1.11 l -10 -31.21 l 26.246 -19.314 C 89.94 35.781 90.085 35.331 89.95 34.92 z"
+                                    style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(255,212,0); fill-rule: nonzero; opacity: 1;"
+                                    transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                            </g>
+                        </svg>
+                        <div>
+                            <p class="ratingText">{{content.10}}<span class="tenText">/10</span></p>
+                            <p class="ratinText"> {{content.11}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="conPlotText">{{content.7}}</p>
+
+            <!-- <p>Rate this movie:</p>
+            <div class="ratingBar">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+            </div> -->
+
+        </div>
+    </div>
+
+    <div>
+        <h2 class="personHeader">Director: <span class="personText"> {{content.4}} </span> </h2>
+        <h2 class="personHeader">Writers: <span class="personText"> {{content.5}} </span> </h2>
+        <h2 class="personHeader">Actors: <span class="personText"> {{content.6}} </span> </h2>
+    </div>
+
+    <br>
+    <br>
+
+    <h1>More Like This:</h1>
+
+    <div class="suggestionContainer">
+        {% for suggestion in recomendations.itertuples %}
+
+        <a class="suggestionCard" onclick="" href=/content/{{suggestion.Index}}>
+            <img src={{suggestion.poster}} alt="" srcset="" class="suggestionImage">
+            <div class="descContainer">
+                <p class="titleText">{{suggestion.title}}</p>
+                <p class="genresText">{{suggestion.genre}}</p>
+                <p class="plotText">{{suggestion.plot}}</p>
+            </div>
+            <div class="ratingRow">
+                <svg class="starIcon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    version="1.1" width="20" height="20" viewBox="0 0 256 256" xml:space="preserve">
+
+                    <defs>
+                    </defs>
+                    <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;"
+                        transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                        <path
+                            d="M 89.95 34.92 c -0.135 -0.411 -0.519 -0.688 -0.95 -0.688 H 56.508 L 45.948 2.814 C 45.811 2.408 45.43 2.133 45 2.133 s -0.811 0.274 -0.948 0.681 l -10.56 31.417 H 1 c -0.432 0 -0.815 0.277 -0.95 0.688 s 0.009 0.861 0.357 1.117 l 26.246 19.314 l -10 31.21 c -0.131 0.409 0.014 0.856 0.36 1.11 c 0.348 0.257 0.817 0.261 1.168 0.012 L 45 68.795 l 26.818 18.889 c 0.173 0.122 0.375 0.183 0.576 0.183 c 0.208 0 0.416 -0.064 0.592 -0.194 c 0.347 -0.254 0.491 -0.701 0.36 -1.11 l -10 -31.21 l 26.246 -19.314 C 89.94 35.781 90.085 35.331 89.95 34.92 z"
+                            style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(255,212,0); fill-rule: nonzero; opacity: 1;"
+                            transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                    </g>
+                </svg>
+                <p class="ratinText">{{suggestion.imdbRating}}/10</p>
+            </div>
+        </a>
+
+        {% endfor %}
+    </div>
+
+</body>
+
+</html>
