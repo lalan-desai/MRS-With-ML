@@ -97,9 +97,9 @@ def get_top_content(languages, genres, user):
             c.imdbid,
             CASE WHEN f.id IS NOT NULL THEN TRUE ELSE FALSE END AS is_favorite
         FROM
-            mrs.dashboard_content c
+            utjwurwq_MRS.dashboard_content c
         LEFT JOIN
-            mrs.dashboard_favorite f
+            utjwurwq_MRS.dashboard_favorite f
         ON
             c.imdbid = f.content_id AND f.user_id = %s
         WHERE
@@ -123,7 +123,7 @@ def searchContent(request):
     results = []
     query = """
         SELECT imdbid, title, year
-        FROM mrs.dashboard_content
+        FROM utjwurwq_MRS.dashboard_content
         WHERE title LIKE %s
         ORDER BY imdbVotes DESC
         LIMIT 5;

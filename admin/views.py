@@ -137,7 +137,7 @@ class ContentListView(SuperuserRequiredMixin, ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
-            return Content.objects.filter(Q(title__icontains=query) | Q(imdb_id__icontains=query))[:10]
+            return Content.objects.filter(Q(title__icontains=query) | Q(imdbid__icontains=query))[:10]
         return Content.objects.all()[:10]
 
 class ContentCreateView(SuperuserRequiredMixin, CreateView):
