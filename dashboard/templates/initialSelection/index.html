@@ -35,7 +35,7 @@
             {% for genre in form.genres %}
             <div class="checkbox-container genre-container">
                 {{ genre.tag }}
-                <img src="{% static 'icons/' %}{{ genre.choice_label }}.png" alt="" srcset="" class="genreImage">
+                <img src="{% static 'icons/' %}{{ genre.choice_label }}.png" alt="" class="genreImage">
                 <label for="{{ genre.id_for_label }}">{{ genre.choice_label }}</label>
                 <span class="counter"></span> <!-- Counter for selected genres -->
             </div>
@@ -54,71 +54,63 @@
                 var delay = index * 50; // Adjust the delay as needed
                 $(this).css('animation-delay', delay + 'ms');
             });
-
+    
             // Event listener for clicking on checkbox containers
             $('.checkbox-container').click(function () {
                 var checkbox = $(this).find('input[type="checkbox"]');
                 var isChecked = checkbox.prop('checked');
                 var isGenre = $(this).hasClass('genre-container');
-
+    
                 if (isGenre) {
-                    // Check if clicking would exceed 3 genre selections
-                    if (!isChecked && $('.genre-container.checked').length >= 3) {
+                    var checkedCount = $('.genre-container input[type="checkbox"]:checked').length;
+    
+                    if (!isChecked && checkedCount >= 3) {
                         alert('You can select up to 3 genres.');
                         return; // Prevent further action if limit is reached
                     }
                 }
-
+    
                 // Toggle checkbox state
                 checkbox.prop('checked', !isChecked);
-
+    
                 // Toggle the checked class for styling
                 $(this).toggleClass('checked', checkbox.prop('checked'));
-
+    
                 // Update counters for selected genres
                 updateGenreCounters();
-
+    
                 // Check if the submit button should be enabled
                 checkSubmitButton();
             });
-
+    
             // Function to update genre counters
             function updateGenreCounters() {
-                $('.genre-container').each(function (index) {
-                    var counter = $(this).find('.counter');
-                    var isChecked = $(this).find('input[type="checkbox"]').prop('checked');
-
-                    if (isChecked) {
-                        var selectedCount = $('.genre-container.checked').index(this) + 1; // Index starts from 0, so add 1 for display
-                        counter.text(selectedCount); // Display the index as the counter value
-                        counter.css('display', 'inline-block'); // Show the counter
-                    } else {
-                        counter.text(''); // Clear counter if not checked
-                        counter.css('display', 'none'); // Hide the counter
-                    }
+                var checkedGenres = $('.genre-container.checked');
+                checkedGenres.each(function (index) {
+                    $(this).find('.counter').text(index + 1).css('display', 'inline-block');
                 });
+    
+                $('.genre-container').not('.checked').find('.counter').text('').css('display', 'none');
             }
-
+    
             // Function to check if the submit button should be enabled
             function checkSubmitButton() {
                 var languageSelected = $('.languageChoices .checkbox-container input[type="checkbox"]:checked').length > 0;
                 var genreSelected = $('.genre-container.checked').length === 3;
-
+    
                 if (languageSelected && genreSelected) {
                     $('.SubmitButton').prop('disabled', false);
                 } else {
                     $('.SubmitButton').prop('disabled', true);
                 }
             }
-
+    
             // Initialize counters to be hidden by default
             $('.counter').css('display', 'none');
-
+    
             // Check the submit button state on page load
             checkSubmitButton();
         });
-
-
     </script>
 </body>
 

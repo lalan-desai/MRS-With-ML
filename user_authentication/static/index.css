@@ -54,9 +54,11 @@ li{
 }
 
 .error{
-    align-self: flex-start;
-    margin-top: 5px;
+    align-self: center;
+    margin: auto;
     color: firebrick;
+    width: fit-content;
+    
 }
 
 .inputForm{

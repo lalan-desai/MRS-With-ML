@@ -27,6 +27,17 @@
                 <button class="submitButton" type="submit">Login</button>
             </form>
 
+
+            {% if form.non_field_errors %}
+            <script>
+                // Convert Django template errors to a JavaScript-friendly format
+                var errors = "{{ form.non_field_errors|striptags|escapejs }}";
+                alert(errors);
+            </script>
+            {% endif %}
+
+
+
             <p>Don't have an account? <a href="/">Sign in</a></p>
         </div>
     </div>

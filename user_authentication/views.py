@@ -9,8 +9,6 @@ class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
 
     def form_valid(self, form):
-        # This method is called when valid form data has been POSTed.
-        # It should return an HttpResponse.
         user = form.get_user()
         login(self.request, user)
         if user.is_superuser:

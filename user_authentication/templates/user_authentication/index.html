@@ -47,6 +47,16 @@
                 <button class="submitButton" type="submit">Register</button>
             </form>
 
+            <!-- check for errors -->
+
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
+
+            
+            
+
+
 
             <p>Already have an account? <a href="/login">Login</a></p>
         </div>
