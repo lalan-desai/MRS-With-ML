@@ -11,7 +11,7 @@ from dashboard.models import UserPreferences
 def getContentFromIMDBID(ID):
     query = f"""
     SELECT *
-    FROM mrs.dashboard_content
+    FROM utjwurwq_MRS.dashboard_content
     WHERE imdbid = '{ID}';
     """
     with connection.cursor() as cursor:
@@ -20,7 +20,7 @@ def getContentFromIMDBID(ID):
     return result
 
 # Write your SQL query
-query = 'SELECT * FROM dashboard_content'
+query = 'SELECT * FROM utjwurwq_MRS.dashboard_content;'
 
 # Read data into a DataFrame
 df = pd.read_sql(query, connection)

@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'MRS_With_ML.wsgi.application'
 DATABASES = {
    'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'mrs',
-        'USER': 'root',
+        'NAME': 'utjwurwq_MRS',
+        'USER': 'utjwurwq_mrs',
         'PASSWORD': 'Un13buvdsm',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'HOST': '103.191.209.34',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }
