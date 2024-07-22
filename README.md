@@ -49,4 +49,6 @@ This project is a movie recommendation system built with Django. It uses the `Tf
 	python manage.py runserver
 	```
 
+## License
 
+All rights reserved. This project and its contents are the intellectual property of Lalan-Desai. No part of this project may be reproduced, distributed, or transmitted in any form or by any means without the prior written permission of the author.
