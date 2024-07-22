@@ -106,7 +106,7 @@ def get_top_content(languages, genres, user):
             ({' OR '.join([f"FIND_IN_SET('{language}', c.language)" for language in languages_list])})
             AND FIND_IN_SET('{genre}', c.genre)
         ORDER BY
-             RAND(), c.imdbVotes DESC
+             c.imdbVotes DESC
         LIMIT 7;
         """
         with connection.cursor() as cursor:

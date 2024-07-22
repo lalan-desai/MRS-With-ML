@@ -17,7 +17,7 @@ def getContentFromIMDBID(ID):
     return result
 
 # Write your SQL query
-query = 'SELECT * FROM utjwurwq_MRS.dashboard_content limit 100;'
+query = 'SELECT * FROM utjwurwq_MRS.dashboard_content;'
 
 # Read data into a DataFrame
 df = pd.read_sql(query, connection)
