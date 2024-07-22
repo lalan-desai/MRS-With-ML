@@ -31,18 +31,23 @@ This project is a movie recommendation system built with Django. It uses the `Tf
 1. Clone the repository:
    ```sh
    git clone https://github.com/lalan-desai/MRS-With-ML.git
-   cd MRS-With-ML```
+   cd MRS-With-ML
+   ```
 2. Update the database configurations in `MRS_With_ML/settings.py` to match your MySQL setup.
 3. Import the provided database schema:
 	- Use the Database.sql file to set up the entire database.
 	- You can import the SQL file into MySQL using a command like:
 	`sh
 	```sh
-	     mysql -u your_username -p your_database_name < Database.sql```
+	mysql -u your_username -p your_database_name < Database.sql
+	```
 4. Apply the migrations:
 	```sh
-	python manage.py migrate```
+	python manage.py migrate
+	```
 5. Start the development server:
-	```sh 
-	python manage.py runserver```
+	```sh
+	python manage.py runserver
+	```
+
 
