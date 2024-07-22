@@ -24,7 +24,7 @@ df = pd.read_sql(query, connection)
 
 df.set_index('imdbid', inplace=True)
 
-df['Plot_Genre'] = df['title'] + ' ' + df['genre'] + ' ' + df['actors'] + ' ' + df['plot']
+df['Plot_Genre'] = df['title'] + ' ' + df['genre'] + ' ' + df['actors']
 
 tfidf = TfidfVectorizer(stop_words='english')
 
