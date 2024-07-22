@@ -20,11 +20,14 @@ This project is a movie recommendation system built with Django. It uses the `Tf
 
 ## Visual Demonstration
 
+### Initial Selection
+![Initial Selection](https://github.com/user-attachments/assets/e65b2b88-a627-4905-a63c-002a0da21663)
+
 ### Dashboard
 ![Dashboard](https://github.com/user-attachments/assets/0d99a36e-29da-42fa-8266-63f938ce8a9b)
 
 ### Content Page
-![Reco](https://github.com/user-attachments/assets/a7dbb8b1-1a5a-4399-bec0-80730884c79a)
+![Content Page](https://github.com/user-attachments/assets/a7dbb8b1-1a5a-4399-bec0-80730884c79a)
 
 ## Installation
 
