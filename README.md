@@ -34,9 +34,8 @@ This project is a movie recommendation system built with Django. It uses the `Tf
    cd MRS-With-ML
    ```
 2. Import the provided database schema:
-	- Use the Database.sql file to set up the entire database.
+	- Use the `Database.sql` file to set up the entire database.
 	- You can import the SQL file into MySQL using a command like:
-	`sh
 	```sh
 	mysql -u your_username -p your_database_name < Database.sql
 	```
