@@ -20,11 +20,14 @@ This project is a movie recommendation system built with Django. It uses the `Tf
 
 ## Visual Demonstration
 
+### Initial Selection
+![Initial Selection](https://github.com/user-attachments/assets/e65b2b88-a627-4905-a63c-002a0da21663)
+
 ### Dashboard
 ![Dashboard](https://github.com/user-attachments/assets/0d99a36e-29da-42fa-8266-63f938ce8a9b)
 
 ### Content Page
-![Reco](https://github.com/user-attachments/assets/a7dbb8b1-1a5a-4399-bec0-80730884c79a)
+![Content Page](https://github.com/user-attachments/assets/a7dbb8b1-1a5a-4399-bec0-80730884c79a)
 
 ## Installation
 
@@ -33,18 +36,23 @@ This project is a movie recommendation system built with Django. It uses the `Tf
    git clone https://github.com/lalan-desai/MRS-With-ML.git
    cd MRS-With-ML
    ```
-2. Import the provided database schema:
-	- Use the `Database.sql` file to set up the entire database.
-	- You can import the SQL file into MySQL using a command like:
-	```sh
-	mysql -u your_username -p your_database_name < Database.sql
-	```
+2. Install the dependencies:
+   ```sh
+   pip install -r requirements.txt
+   ```
 3. Update the database configurations in `MRS_With_ML/settings.py` to match your MySQL setup.
 4. Apply the migrations:
 	```sh
 	python manage.py migrate
 	```
-5. Start the development server:
+5. Import the provided database schema:
+	- Use the `dashboard_content.sql` file for movies content (Must!).
+	- You can import the SQL file into MySQL using a command like:
+	```sh
+	mysql -u your_username -p your_database_name < dashboard_content.sql
+	```
+ 
+6. Start the development server:
 	```sh
 	python manage.py runserver
 	```
