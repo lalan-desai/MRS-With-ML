@@ -87,15 +87,14 @@ WSGI_APPLICATION = 'MRS_With_ML.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# Config your database accordingly.
 DATABASES = {
    'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'YOUR_DB_NAME',
-        'USER': 'YOUR_USERNAME',
-        'PASSWORD': 'YOUR_PASSWORD',
-        'HOST': 'YOUR_HOST',  
-        'PORT': 'YOUR_PORT',
+        'NAME': 'utjwurwq_MRS',
+        'USER': 'utjwurwq_mrs',
+        'PASSWORD': 'Un13buvdsm',
+        'HOST': '103.191.209.34',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
     }
 }
 
