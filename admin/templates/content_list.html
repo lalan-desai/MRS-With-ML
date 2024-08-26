@@ -14,79 +14,58 @@
 
 <body>
     <nav>
-        <a href="/admin">
-            <h1>Admin Panel</h1>
-        </a>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <h1>Content</h1>
+        </div>
         <div class="profileContainer">
-            <img src="{% static 'icons/User.png' %}" alt="" srcset="" class="navUserImage">
+            <img src="{% static 'icons/User.png' %}" alt="User" class="navUserImage">
             <p>{{ user_info.username }}</p>
             <form action="/logout" method="post">
                 {% csrf_token %}
                 <button type="submit" class="logoutButton">
-                    <img src="{% static 'icons/Logout.png' %}" alt="" srcset="" class="navLogoutImage">
+                    <img src="{% static 'icons/Logout.png' %}" alt="Logout" class="navLogoutImage">
                 </button>
             </form>
         </div>
     </nav>
 
+    <div class="sidebar">
+        <a href="/admin" class="navButton">Dashboard</a>
+        <a href="/admin/content/create" class="navButton">Create</a>
+    </div>
+
     <div class="dashboard">
-        <h1>Content List</h1>
-        <form method="get" action="{% url 'content-list' %}">
-            <input class="serchInput" type="text" name="q" placeholder="Search by title or IMDb ID" value="{{ request.GET.q }}">
-            <button type="submit">Search</button>
+        <form method="get" action="{% url 'content-list' %}" class="search-form">
+            <input class="searchInput" type="text" name="q" placeholder="Search by title or IMDb ID" value="{{ request.GET.q }}">
+            <button type="submit" class="searchButton">Search</button>
         </form>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>IMDb ID</th>
-                    <th>Year</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for content in contents %}
-                <tr>
-                    <td>
-                        <img src={{content.poster}} alt="" srcset="" class="suggestionImage">
-                    </td>
-                    <td>{{ content.title }}</td>
-                    <td>{{ content.imdbid }}</td>
-                    <td>{{ content.year }}</td>
-                    <td>
-                        <a href="{% url 'content-update' content.pk %}">Edit</a>
-                        <a href="{% url 'content-delete' content.pk %}">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        {% if is_paginated %}
-        <div class="pagination">
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                <a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page=1">&laquo; first</a>
-                <a
-                    href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
-
-                <span class="current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-
-                {% if page_obj.has_next %}
-                <a
-                    href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ page_obj.next_page_number }}">next</a>
-                <a
-                    href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ page_obj.paginator.num_pages }}">last
-                    &raquo;</a>
-                {% endif %}
-            </span>
+        <div class="cards-container">
+            {% for content in contents %}
+            <div class="card">
+                <img src="{{ content.poster }}" alt="{{ content.title }}" class="card-img">
+                <div class="card-body">
+                    <h2 class="card-title">{{ content.title }}</h2>
+                    <p class="card-imdb-id">IMDB ID: {{ content.imdbid }}</p>
+                    <p class="card-year">Year: {{ content.year }}</p>
+                </div>
+                <div class="card-footer" style="background-color: white;">
+                    <a href="{% url 'content-update' content.pk %}" class="card-btn">Edit</a>
+                    <a href="{% url 'content-delete' content.pk %}" class="card-btn">Delete</a>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        {% endif %}
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const cards = document.querySelectorAll('.card');
+                cards.forEach((card, index) => {
+                    card.style.setProperty('--card-index', index + 1);
+                });
+            });
+        </script>
+            
+
     </div>
 </body>
-
 </html>

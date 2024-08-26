@@ -11,6 +11,13 @@ from django.db.models import Count
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import ListView
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
+
 
 
 def get_total_users_excluding_superusers():
@@ -156,3 +163,77 @@ class ContentDeleteView(SuperuserRequiredMixin, DeleteView):
     model = Content
     template_name = 'content_confirm_delete.html'  # Template for confirming deletion
     success_url = reverse_lazy('content-list')
+
+
+def users(request):
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            User = get_user_model()
+            # get all the users and all the column details from the database
+            users = User.objects.values()
+
+            return render(request, 'users.html', {'users': users})
+        else:
+            return render(request, 'not_allowed.html')
+    else:
+        return render(request, 'login.html')
+    
+@login_required
+@csrf_exempt
+def delete_user(request):
+    if request.method == 'POST':
+        # Check if the user is authenticated and is a superuser
+        if request.user.is_authenticated and request.user.is_superuser:
+            user_id = request.POST.get('user_id')
+            
+            if user_id:
+                try:
+                    # Get the user object or return 404 if not found
+                    User = get_user_model()
+                    user = get_object_or_404(User, id=user_id)
+                    
+                    # Ensure the superuser is not deleting themselves (optional)
+                    if user != request.user:
+                        user.delete()
+                        return JsonResponse({'success': True, 'message': 'User deleted successfully.'})
+                    else:
+                        return JsonResponse({'success': False, 'message': 'Cannot delete yourself.'}, status=403)
+                except Exception as e:
+                    return JsonResponse({'success': False, 'message': str(e)}, status=400)
+            else:
+                return JsonResponse({'success': False, 'message': 'User ID not provided.'}, status=400)
+        else:
+            return JsonResponse({'success': False, 'message': 'Unauthorized.'}, status=403)
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
+    
+
+@login_required
+@csrf_exempt
+def toggle_user_enabled(request):
+    if request.method == 'POST':
+        # Check if the user is authenticated and is a superuser
+        if request.user.is_authenticated and request.user.is_superuser:
+            user_id = request.POST.get('user_id')
+            
+            if user_id:
+                try:
+                    # Get the user object or return 404 if not found
+                    User = get_user_model()
+                    user = get_object_or_404(User, id=user_id)
+                    
+                    # Ensure the superuser is not toggling their own status (optional)
+                    if user != request.user:
+                        user.is_active = not user.is_active
+                        user.save()
+                        return JsonResponse({'success': True, 'message': 'User status toggled successfully.'})
+                    else:
+                        return JsonResponse({'success': False, 'message': 'Cannot toggle your own status.'}, status=403)
+                except Exception as e:
+                    return JsonResponse({'success': False, 'message': str(e)}, status=400)
+            else:
+                return JsonResponse({'success': False, 'message': 'User ID not provided.'}, status=400)
+        else:
+            return JsonResponse({'success': False, 'message': 'Unauthorized.'}, status=403)
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)

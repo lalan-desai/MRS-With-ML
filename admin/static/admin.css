@@ -6,21 +6,69 @@
 
 nav{
     display: flex;
+    position: fixed;
+    width: 100%;
+    top: 0;
     background-color: rgb(240, 240, 240);
     align-items: center;
-    padding: 0.7rem 1rem;
+    padding: 0.4rem 1rem;
     justify-content: space-between;
+    z-index: 2;
+    border-bottom: 1px solid rgb(200, 200, 200);
 }
+
+
 
 .leftSideNavBar{
     display: flex;
     align-items: center;
-
 }
 
 .navButton{
     margin-left: 30px;
     font-size: 1.2rem;
+}
+
+.sidebar {
+    padding-top: 20px;
+    width: 250px;
+    height: 100vh;
+    background-color: rgb(240, 240, 240);
+    position: fixed;
+    top: 50px; /* Adjust to account for header height */
+    left: 0;
+    transition: transform 0.3s ease;
+    transform: translateX(0px); /* Initially hidden */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgb(200, 200, 200);
+}
+
+.navButton{
+    background-color: rgb(200, 200, 200);
+    text-decoration: none;
+    border-radius: 2px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 1.2rem;
+    margin: 10px;
+}
+
+.navButton .active{
+    background-color: rgb(150, 150, 150);
+}
+
+
+
+.menuToggle {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
 }
 
 nav h1{
@@ -36,6 +84,7 @@ nav h1{
     border: 1px darkcyan solid;
     border-radius: 20px;
     cursor: pointer;
+    margin-right: 30px;
 }
 
 .navUserImage {
@@ -67,9 +116,11 @@ nav h1{
     flex-direction: row;
     margin: auto;
     justify-content: space-evenly;
+
 }
 
 .topCardContainer{
+    
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
     gap: 40px;
@@ -78,6 +129,14 @@ nav h1{
     color: white;
     margin: 15px;
     border-radius: 10px;
+}
+
+.dashboard{
+    
+    margin-left: 250px;
+    padding: 20px;
+    margin-top: 50px;
+    
 }
 
 .dashCard{

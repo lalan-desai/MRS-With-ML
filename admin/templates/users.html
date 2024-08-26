@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users List</title>
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <nav>
+        <div class="leftSideNavBar">
+            <h1 style="margin-left: 10px;">Users</h1>
+        </div>
+        <div class="profileContainer">
+            <img src="{% static 'icons/User.png' %}" alt="" class="navUserImage">
+            <p>{{ user_info.username }}</p>
+            <form action="/logout" method="post">
+                {% csrf_token %}
+                <button type="submit" class="logoutButton">
+                    <img src="{% static 'icons/Logout.png' %}" alt="" class="navLogoutImage">
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="sidebar">
+        <a href="/admin" class="navButton">Dashboard</a>
+        <a href="/admin/content" class="navButton">Content</a>
+    </div>
+
+    <div class="dashboard">
+        <h1>Users List</h1>
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Date Joined</th>
+                    <th>Enabled</th>
+                    <th>Is Admin</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.date_joined }}</td>
+                    <td>
+                        <input type="checkbox" {% if user.is_active %} checked {% endif %} onchange="toggleUserEnabled({{ user.id }})">
+                    </td>
+                    <td>
+                        <input type="checkbox" {% if user.is_superuser %} checked {% endif %} disabled>
+                    </td>
+                    <td>
+                        <button onclick="deleteUser({{ user.id }})">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function toggleUserEnabled(userId) {
+            $.ajax({
+                url: '/admin/users/toggle_user_enabled',
+                type: 'POST',
+                data: {
+                    'user_id': userId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        }
+
+        function deleteUser(userId) {
+            $.ajax({
+                url: '/admin/users/delete_user',
+                type: 'POST',
+                data: {
+                    'user_id': userId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    console.log(response);
+                    location.reload(); // Reload the page to reflect changes
+                }
+            });
+        }
+    </script>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</body>
+
+</html>

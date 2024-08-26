@@ -1,11 +1,140 @@
-
-body{
+body {
     display: flex;
-    width: 100%;
     flex-direction: column;
+    width: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
-.serchInput{
-    padding: 2rem 1rem;
-    width: 90%;
+
+
+
+.dashboard {
+    margin-left: 220px; /* Adjust based on sidebar width */
+    padding: 20px;
+    width: calc(100% - 220px);
+}
+.search-form {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.searchInput {
+    width: 300px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.searchButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.searchButton:hover {
+    background-color: #0056b3;
+}
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 300px; /* Adjust as needed */
+    box-sizing: border-box;
+    opacity: 0; /* Start invisible */
+    transform: translateY(20px); /* Start below */
+    transition: transform 0.6s ease-out, opacity 0.6s ease-out; /* Smooth animation */
+    animation: popUp 0.6s ease-out forwards; /* Apply animation */
+    animation-delay: calc(0.2s * var(--card-index)); /* Dynamic delay */
+}
+
+@keyframes popUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-img {
+    width: 100%;
+    height: auto;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    margin: 0;
+    color: #333;
+}
+
+.card-imdb-id,
+.card-year {
+    font-size: 1rem;
+    color: #666;
+    margin: 5px 0;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    padding: 10px;
+    background: #f9f9f9;
+}
+
+.card-btn {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.card-btn:hover {
+    background: #0056b3;
+}
+
+.pagination {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.step-links a {
+    color: #007bff;
+    text-decoration: none;
+    padding: 0 5px;
+}
+
+.step-links .current {
+    font-weight: bold;
 }

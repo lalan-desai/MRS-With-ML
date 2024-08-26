@@ -13,10 +13,13 @@
 </head>
 
 <body>
+
+
+
     <nav>
         <div class="leftSideNavBar">
-            <h1>Admin Panel</h1>
-            <a href="admin/content/" class="navButton">Content</a>
+
+            <h1 style="margin-left: 10px;">Dashboard</h1>
         </div>
         <div class="profileContainer">
             <img src="{% static 'icons/User.png' %}" alt="" srcset="" class="navUserImage">
@@ -29,6 +32,19 @@
             </form>
         </div>
     </nav>
+
+    <div class="sidebar">
+
+        <a href="/admin/content" class="navButton">
+            Content
+        </a>
+
+        <a href="admin/users" class="navButton">Users</a>
+        
+
+    </div>
+
+
 
     <div class="dashboard">
 
@@ -60,15 +76,17 @@
         </div>
 
 
-
+        <p>Total Genre Count:</p>
         <div class="chart-container">
             <canvas id="genreChart"></canvas>
         </div>
 
+        <p>Total Language Count:</p>
         <div class="chart-container">
             <canvas id="languageChart"></canvas>
         </div>
 
+        <p>Total Content Count: (10 Years grouped)</p>
         <div class="chart-container">
             <canvas id="yearBatchChart"></canvas>
         </div>
