@@ -52,7 +52,6 @@ def get_recommendations(imdb_id, cosine_sim=cosine_sim, df=df, num_recommendatio
     return recommended_movies
 
 def content(request, imdbid):
-    print(imdbid)
     data = getContentFromIMDBID(imdbid)
     recomendations = get_recommendations(imdb_id=imdbid)
     return render(request, 'MRS_With_ML/content.html', {'content' : data, 'recomendations' : recomendations})
